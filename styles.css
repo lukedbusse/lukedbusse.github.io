@@ -1,0 +1,14 @@
+body{
+    background-color: rgb(184, 180, 180);
+    margin: 20px;
+    font:arial;
+}
+
+.navbar{
+    background-color: black;
+    height: 30px;
+    color:white;
+    font-size:25px;
+    text-decoration:none;
+    margin: 20px;
+}
