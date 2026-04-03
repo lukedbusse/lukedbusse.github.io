@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <title>Mad Lib/title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+        <div class="navbar">
+            <a href="index.html">Home</a>
+            <a href="resume.html">Resume</a>
+            <a href="gallery.html">Photo Gallery</a>
+            <a href="geoquiz.html">Geography Quiz</a>
+        </div>
+                <!-- WELCOME SCREEN -->
+    <div id="welcomeScreen" style="text-align: center;">
+        <h1>Mad Lib</h1>
+        <p>
+        Mad Libs is a popular phrasal template word game where one player prompts others for a list of words (nouns, verbs, adjectives, etc.) to fill in the blanks of a story, usually without seeing the context.
+        </p>
+        <button onclick="startQuiz()">Start Game</button>
+    </div>
+    <!-- QUIZ CONTENT (hidden at start) -->
+    <div id="quizContainer" style="text-align: center; display: none;">
+
+        <h2 id="question"></h2>
+
+        <input id="answerInput" type="text" placeholder="Enter your answer">
+
+        <br><br>
+
+        <button onclick="checkAnswer()">Submit Word</button>
+
+        <p id="feedback"></p>
+
+    </div>
+
+    <script>
+        let answerData = ["adjective", "noun", "verb", "noun", "adjective", "noun", "verb"];
+        let currentQuestion = 0;
+
+        function loadQuestion(){
+            let type = answerData[currentQuestion];
+            document.getElementById("question").innerText = "Enter a/an " + type + "."
+        }
+
+        
+        function startQuiz(){
+            document.getElementById("welcomeScreen").style.display = "none";
+            document.getElementById("quizContainer").style.display = "block";
+            loadQuestion();
+        }
+
+    </script>
+    </body>
+
+</html>
