@@ -1,53 +1,48 @@
 <!DOCTYPE html>
 <html>
-    <head>
+<head>
+    <title>Busse Resume</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="resume.html" class="active">Resume</a>
+        <a href="gallery.html">Photo Gallery</a>
+        <a href="geoquiz.html">Geography Quiz</a>
+    </div>
+    <div id="main-container">
+        <h1 style="color:rgb(255, 255, 255)">Luke Busse</h1>
+        
+        <img id="pfp" alt="Luke Busse" src="Image.jpg">
 
-        <title>Busse Resume</title>
-            <link rel="stylesheet" href="styles.css">
-    </head>
-
-    <body>
-
-
-        <div class="navbar">
-            <a href="index.html">Home</a>
-            <a href="gallery.html">Photo Gallery</a>
-            <a href="geoquiz.html">Geography Quiz</a>
-        </div>
-
-        <h1 style="text-align: center;color:rgb(255, 255, 255)">Luke Busse</h1>
-        <br>
-        <img src="Image.jpg" width="30%" height="30%" style="display: block; margin-left: auto; margin-right: auto;">
-        <div style="background-color: blue; max-width: 50%; margin: auto;">
-            <h2 style="color: white;">Contact Info</h2>
-            <ul style="color: white;"> 
+        <div class="resume-section" style="background-color: blue;">
+            <h2>Contact Info</h2>
+            <ul> 
                 <li>Phone Number: <i>555-555-5555</i></li>
                 <li>Email: <i>lukedbusse12@gmail.com</i></li>   
                 <li>Address: <i>7217 Quimper Ln</i></li>
             </ul>
         </div>
-        <div style="background-color: blueviolet; max-width: 50%; margin: auto">
-            <h2 style="color: white;">Volenteering/Work History</h2>
-            <ul style="color: white;"> 
-                <li>Park Volenteer: Clean up litter and keep the park clean</li>
+
+        <div class="resume-section" style="background-color: blueviolet;">
+            <h2>Volunteering/Work History</h2>
+            <ul> 
+                <li>Park Volunteer: Clean up litter and keep the park clean</li>
                 <li>Lawn Mower: Mow peoples lawns</li>   
             </ul>
         </div>
-        <div style="background-color: darkblue; max-width: 50%; margin: auto">
-            <h2 style="color: white;">Academic History</h2>
-            <p style="color: white;"> I have previously taken AP World History and am currently taking AP Pre-Calculus and AP Computer Science Principles as well as OnRamps US History and OnRamps Reading and Writing Rhetoric.</p>
+        <div class="resume-section" style="background-color: darkblue;">
+            <h2>Academic History</h2>
+            <p>I have previously taken AP World History and am currently taking AP Pre-Calculus and AP Computer Science Principles as well as OnRamps US History and OnRamps Reading and Writing Rhetoric.</p>
         </div>
-        <div style="background-color: dodgerblue; max-width: 50%; margin: auto">
-            <h2 style="color: white;">Extracuricular</h2>
-            <p style="color: white;">I play baseball, play in the band, and play boardgames</p>
+        <div class="resume-section" style="background-color: dodgerblue;">
+            <h2>Extracurricular</h2>
+            <p>I play baseball, play in the band, and play boardgames</p>
         </div>
-        <div style="background-color: aquamarine; max-width: 50%; margin: auto">
-            <h2 style="color: white;">Awards/Achievements</h2>
-            <p style="color: white;"> I had 4 classes at 98% or higher last semester and I scored high on my PSAT</p>
-        </div>
-        <div style="background-color: darkcyan; max-width: 50%; margin: auto">
-            <h2 style="color: white;">References</h2>
-            <table style="color: white;">
+        <div class="resume-section" style="background-color: darkcyan;">
+            <h2>References</h2>
+            <table style="margin: 0 auto; color: white;">
                 <tr>
                     <th>Name</th>
                     <th>Relationship</th>
@@ -60,12 +55,11 @@
                 </tr>
                 <tr>
                     <td>John Davis</td>
-                    <td>Park Volenteer leader</td>
+                    <td>Park Volunteer leader</td>
                     <td>555-555-5555</td>
                 </tr>
             </table>
         </div>
-        
+    </div> 
     </body>
-
 </html>
