@@ -32,23 +32,48 @@
     </div>
     <script>
         let answerData = ["adjective", "noun", "verb", "noun", "adjective", "noun", "verb"];
-        let answerWord = []
+        let answerWord = [];
         let currentQuestion = 0;
-        function loadQuestion(){
-            let type = answerData[currentQuestion];
-            document.getElementById("question").innerText = "Enter a/an " + type + "."
+
+        function loadQuestion() {
+            if (currentQuestion < answerData.length) {
+                let type = answerData[currentQuestion];
+                document.getElementById("question").innerText = "Enter a/an " + type + ".";
+                document.getElementById("answerInput").value = ""; // Clear input for next word
+                document.getElementById("feedback").innerText = `Word ${currentQuestion + 1} of ${answerData.length}`;
+            } else {
+                showStory();
+            }
         }
-        function checkAnswer(){
+        function checkAnswer() {
             let userAnswer = document.getElementById("answerInput").value.trim();
-            answerWord.push(userAnswer)
-            currentQuestion++
+            
+            if (userAnswer === "") {
+                document.getElementById("feedback").innerText = "Please enter a word!";
+                return;
+            }
+            answerWord.push(userAnswer);
+            currentQuestion++;
+            loadQuestion();
         }
-        function startQuiz(){
+        function showStory() {
+            let story = `Yesterday, I saw a <b>${answerWord[0]} ${answerWord[1]}</b> trying to 
+                        <b>${answerWord[2]}</b> a giant <b>${answerWord[3]}</b>. 
+                        It was so <b>${answerWord[4]}</b> that I accidentally dropped my 
+                        <b>${answerWord[5]}</b> and started to <b>${answerWord[6]}</b>!`;
+            let container = document.getElementById("quizContainer");
+            container.innerHTML = `
+                <h1>Your Funny Story</h1>
+                <p style="font-size: 1.5rem; line-height: 1.6;">${story}</p>
+                <br>
+                <button onclick="location.reload()">Play Again</button>
+            `;
+        }
+        function startQuiz() {
             document.getElementById("welcomeScreen").style.display = "none";
             document.getElementById("quizContainer").style.display = "block";
             loadQuestion();
         }
-
     </script>
     </body>
 
