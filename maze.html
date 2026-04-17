@@ -1,9 +1,9 @@
-<html>   
-<body>
+<html> 
     <head>
-        <title>Snake</title>
+        <title>Maze</title>
         <link rel="stylesheet" href="styles.css">
-    </head>
+    </head>  
+<body>
     <div class="navbar">
         <a href="index.html">Home</a>
         <a href="resume.html">Resume</a>
@@ -11,38 +11,60 @@
         <a href="geoquiz.html">Geography Quiz</a>
         <a href="madlib.html">Mad Lib</a>
         <a href="blockgame.html">Block Game</a>
-        <a href="snake.html" class="active">Snake</a>
-        <a href="maze.html">Maze</a>
+        <a href="snake.html">Snake</a>
+        <a href="maze.html" class="active">Maze</a>
     </div>    
     <div>
         <h2 style="text-align: center;">Snake Game</h2>
-        <p style="text-align: center;">
-            In the classic arcade game, Snake, you control a continuously moving line that grows longer each time it consumes food. 
-            The goal is to achieve the highest score possible by navigating the snake to eat while avoiding collisions with the      
-            creen boundaries or its own ever-expanding body.
-        </p>
 
-        <canvas id="gameCanvas" width="800" height="500" style = "background-color: rgb(0, 0, 0);display: block; margin: 0 auto"></canvas>
-        <button onclick="startGame()" style=" display:block;margin: 0 auto;">Start</button>
+        <canvas id="gameCanvas" width="300" height="300" style = "background-color: rgb(0, 0, 0);display: block; margin: 0 auto"></canvas>
     </div>
-
     
     <script>
-
+        let maze = [[1,0,1,1,1,1,1,0,1,1,1,1,0,1,1]
+                    [1,0,1,1,1,1,1,0,1,1,1,1,0,1,1]
+                    [1,0,1,1,1,0,0,0,0,1,1,1,0,1,1]
+                    [1,0,0,1,1,0,1,1,0,0,0,1,0,1,1]
+                    [1,1,0,1,1,1,1,1,1,1,0,1,0,1,1]
+                    [1,1,0,0,0,0,0,2,1,1,2,0,0,1,1]
+                    [1,1,0,1,1,0,1,0,1,1,1,0,1,1,1]
+                    [1,0,0,1,1,0,0,0,1,1,1,0,1,1,1]
+                    [1,0,1,1,1,1,1,1,1,1,1,3,0,1,1]
+                    [3,0,1,1,1,0,0,0,1,4,0,1,0,1,1]
+                    [0,1,1,1,1,0,1,0,1,1,0,1,0,1,1]
+                    [0,1,1,1,1,0,1,0,0,0,0,1,0,1,1]
+                    [0,0,0,0,0,0,1,1,1,1,1,1,0,1,1]
+                    [1,1,1,1,1,1,1,0,0,0,0,0,0,1,1]
+                    [1,1,1,1,1,1,1,0,1,1,1,1,1,1,1]]
+                
         // ===== GLOBALS =====
         let canvas, ctx;
-        let head;
+        let player, tiles;
 
         // ===== CLASS =====
-        class Head {
+        class Tile {
+            constructor(type, x, y, row, column) {
+                this.x=x*20;
+                this.y=y*20;
+                this.size=20;
+                this.color="red";
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+            }
+        }
+        class Player {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.size = 15;
+                this.size = 20;
                 this.color = "blue";
                 this.speed = 5;
                 this.dx = this.speed;
                 this.dy = 0;
+
             }
 
             draw(ctx) {
@@ -77,35 +99,31 @@
                 );
                 
             }
+            interact(tile) {
+
+            }
         
-        }
-        class Apple {
-            constructor() {
-                this.x = Math.floor(Math.random() * 800);
-                this.y = Math.floor(Math.random() * 500);
-                this.size = 20;
-                this.color = "red";
-            }
-            draw(app) {
-                app.fillStyle = this.color;
-                app.fillRect(this.x, this.y, this.size, this.size);
-            }
         }
 
         // ===== SETUP =====
         function startGame() {
             canvas = document.getElementById("gameCanvas");
             ctx = canvas.getContext("2d");
-            head = new Head(200,200);
-            fruit = new Apple()
+            player = new  Player(0,0);
+            tiles=[];
+            for(let row=0; row<maze.length;row++){
+                for(let col=0; col<maze.length;row++){
+                    tiles.push(new Tile(row, col,maze[row][col]));
+                }
+            }
             document.addEventListener("keydown", handleKeys);
             gameLoop();
         }
-
         // ===== GAME LOOP =====
         function gameLoop() {
             update();
             draw();
+    
             requestAnimationFrame(gameLoop);
         }
 
@@ -116,7 +134,10 @@
         // ===== DRAW =====
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            head.draw(ctx);
+            player.draw(ctx);
+            for(let t=0; t<tiles;t++){
+                tiles[t].draw(ctx);
+            }
         }
 
         // ===== CONTROLS =====
