@@ -19,91 +19,108 @@
         <p style="text-align: center;">
             In the classic arcade game, Snake, you control a continuously moving line that grows longer each time it consumes food. 
             The goal is to achieve the highest score possible by navigating the snake to eat while avoiding collisions with the      
-            creen boundaries or its own ever-expanding body.
+            screen boundaries or its own ever-expanding body.
         </p>
 
         <canvas id="gameCanvas" width="800" height="500" style = "background-color: rgb(0, 0, 0);display: block; margin: 0 auto"></canvas>
         <button onclick="startGame()" style=" display:block;margin: 0 auto;">Start</button>
     </div>
 
-    
     <script>
-
         // ===== GLOBALS =====
         let canvas, ctx;
         let head;
+        let fruit;
+        let gameActive = false;
 
         // ===== CLASS =====
         class Head {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.size = 15;
+                this.size = 20;
                 this.color = "blue";
                 this.speed = 5;
                 this.dx = this.speed;
                 this.dy = 0;
+                this.body = [];
+                this.totalSegments = 0; 
+            }
+            draw(ctx) {
+                ctx.fillStyle = "blue";
+                for (let i = 0; i < this.body.length; i++) {
+                    ctx.fillRect(this.body[i].x, this.body[i].y, this.size, this.size);
+                }
+                ctx.fillStyle = this.color;
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+            }
+            move() {
+                this.body.unshift({ x: this.x, y: this.y });
+                this.x += this.dx;
+                this.y += this.dy;
+                if (this.body.length > this.totalSegments) {
+                    this.body.pop();
+                }
+                if (!this.inBounds()) {
+                    if (this.x <= 0 || this.x + this.size >= canvas.width) {
+                        this.dx *= -1;
+                    }
+                    if (this.y <= 0 || this.y + this.size >= canvas.height) {
+                        this.dy *= -1;
+                    }
+                }
+            }
+
+            inBounds() {
+                return (
+                    this.x >= 0 &&
+                    this.y >= 0 &&
+                    this.x + this.size <= canvas.width &&
+                    this.y + this.size <= canvas.height
+                );
+            }
+        }
+
+        class Apple {
+            constructor() {
+                this.size = 20;
+                this.color = "red";
+                this.spawn();
+            }
+
+            spawn() {
+                this.x = Math.floor(Math.random() * (canvas.width - this.size));
+                this.y = Math.floor(Math.random() * (canvas.height - this.size));
             }
 
             draw(ctx) {
                 ctx.fillStyle = this.color;
                 ctx.fillRect(this.x, this.y, this.size, this.size);
             }
-
-            move() {
-                this.x += this.dx;
-                this.y += this.dy;
-
-                if (!this.inBounds()) {
-                    if (this.x <= 0 || this.x + this.size >= canvas.width) {
-                        this.dx *= -1;
-                    }
-                    if (this.y <= 0 || this.y + this.size >= canvas.height) {
-                        this.dy *= -1
-                    }
-                }
-            }
-
-            inBounds() {
-                return this.x >= 0 && this.x + this.size <= canvas.width && this.y >= 0 && this.y + this.size <= canvas.height;
-            }
-
-            isColliding(aX, aY, aSize, bX, bY, bSize){
-                return (
-                aX < bX + bSize &&
-                aX + aSize > bX &&
-                aY < bY + bSize &&
-                aY + aSize > bY
-                );
-                
-            }
-        
         }
-        class Apple {
-            constructor() {
-                this.x = Math.floor(Math.random() * 800);
-                this.y = Math.floor(Math.random() * 500);
-                this.size = 20;
-                this.color = "red";
-            }
-            draw(app) {
-                app.fillStyle = this.color;
-                app.fillRect(this.x, this.y, this.size, this.size);
-            }
+        function isColliding(obj, other) {
+            return (
+                obj.x < other.x + other.size &&
+                obj.x + obj.size > other.x &&
+                obj.y < other.y + other.size &&
+                obj.y + obj.size > other.y
+            );
         }
 
         // ===== SETUP =====
         function startGame() {
             canvas = document.getElementById("gameCanvas");
             ctx = canvas.getContext("2d");
-            head = new Head(200,200);
-            fruit = new Apple()
+            head = new Head(227, 100);
+            fruit = new Apple();
             document.addEventListener("keydown", handleKeys);
+            gameActive = true;
             gameLoop();
         }
 
         // ===== GAME LOOP =====
         function gameLoop() {
+            if (!gameActive) return;
             update();
             draw();
             requestAnimationFrame(gameLoop);
@@ -111,11 +128,14 @@
 
         function update() {
             head.move();
+            if (isColliding(head, fruit)) {
+                head.totalSegments += 5;
+                fruit.spawn();
+            }
         }
-
-        // ===== DRAW =====
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+            fruit.draw(ctx);
             head.draw(ctx);
         }
 
@@ -124,28 +144,23 @@
             if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
                 e.preventDefault();
             }
-
-            if (e.key === "ArrowUp" && head.dy !== head.speed) {
+            if (e.key === "ArrowUp" && head.dy === 0) {
                 head.dy = -head.speed;
                 head.dx = 0;
             }
-
-            if (e.key === "ArrowDown" && head.dy !== -head.speed) {
+            if (e.key === "ArrowDown" && head.dy === 0) {
                 head.dy = head.speed;
                 head.dx = 0;
             }
-
-            if (e.key === "ArrowLeft" && head.dx !== head.speed) {
+            if (e.key === "ArrowLeft" && head.dx === 0) {
                 head.dy = 0;
                 head.dx = -head.speed;
             }
-
-            if (e.key === "ArrowRight" && head.dx !== -head.speed) {
+            if (e.key === "ArrowRight" && head.dx === 0) {
                 head.dy = 0;
                 head.dx = head.speed;
             }
         }
-
     </script>
 </body>
-</html> 
+</html>

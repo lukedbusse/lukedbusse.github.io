@@ -48,11 +48,13 @@
                 this.y=y*20;
                 this.size=20;
                 if(type === "wall"){
-                    this.color="black";
-                } else (type === "exit"); {
+                    this.color="black"
+                } 
+                if (type === "exit") {
                     this.color="green";
-                }
+                }    
             }
+        }
             draw() {
                 ctx.fillStyle = this.color;
                 ctx.fillRect(this.x, this.y, this.size, this.size);
